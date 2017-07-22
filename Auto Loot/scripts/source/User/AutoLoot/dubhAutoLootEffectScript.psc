@@ -200,16 +200,28 @@ Bool Function LootObject(ObjectReference objLoot)
 				; handle non-player object as container
 				; force dubhAutoLootDummyActor to activate the objLoot reference
 				If kContainer != Player
-					If objLoot.Activate(dubhAutoLootDummyActor, False)
+					
+					If (objLoot.isEnabled)
+						dubhAutoLootDummyActor.AddItem(objLoot)
+						objLoot.DisableNoWait()
+						objLoot.DeleteWhenAble()
 						dubhAutoLootDummyActor.RemoveAllItems(kContainer, dubhAutoLootTheftAlarm.Value)
 						Return True
 					EndIf
+					
+					
+					
+					
+					
 				; handle player object as container
 				Else
-					If objLoot.Activate(Player, False)
-						Log("LootObject", "objLoot: " + objLoot)
-						Return True
+				
+					If (objLoot.isEnabled)
+						Player.AddItem(objLoot)
+						objLoot.DisableNoWait()
+						objLoot.DeleteWhenAble()
 					EndIf
+					
 				EndIf
 			EndIf
 		EndIf
